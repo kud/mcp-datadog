@@ -1,0 +1,56 @@
+{
+  "name": "@kud/mcp-datadog",
+  "version": "0.1.0",
+  "description": "Datadog MCP server for monitoring, metrics, logs, and dashboards",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "mcp-datadog": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "build:watch": "tsc -p tsconfig.json --watch",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "inspect": "npx @modelcontextprotocol/inspector node dist/index.js",
+    "inspect:dev": "npx @modelcontextprotocol/inspector tsx src/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "keywords": [
+    "datadog",
+    "mcp",
+    "mcp-server",
+    "monitoring",
+    "metrics",
+    "logs",
+    "observability"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@datadog/datadog-api-client": "^1.30.0",
+    "@modelcontextprotocol/sdk": "^1.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@vitest/ui": "4.0.5",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0",
+    "vitest": "4.0.5"
+  }
+}
