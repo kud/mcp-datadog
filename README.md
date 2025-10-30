@@ -50,7 +50,7 @@
 
 **Option 1: Via npx (recommended):**
 ```bash
-npx @kud/mcp-datadog
+npx --yes @kud/mcp-datadog@latest
 ```
 
 **Option 2: Via npm global install:**
@@ -97,7 +97,7 @@ Add to your `claude_desktop_config.json`:
   "mcpServers": {
     "datadog": {
       "command": "npx",
-      "args": ["-y", "@kud/mcp-datadog"],
+      "args": ["--yes", "@kud/mcp-datadog@latest"],
       "env": {
         "DD_API_KEY": "your-api-key",
         "DD_APP_KEY": "your-app-key",
@@ -114,17 +114,28 @@ Add to your `claude_desktop_config.json`:
 
 ### Claude Code CLI
 
-Add to your `.clauderc`:
+**Option 1: Using the CLI command (recommended):**
+
+```bash
+claude mcp add --transport stdio --scope user datadog \
+  --env DD_API_KEY=your-api-key \
+  --env DD_APP_KEY=your-app-key \
+  --env DD_SITE=datadoghq.com \
+  -- npx --yes @kud/mcp-datadog@latest
+```
+
+**Option 2: Manual configuration in `.clauderc`:**
 
 ```json
 {
   "mcpServers": {
     "datadog": {
       "command": "npx",
-      "args": ["-y", "@kud/mcp-datadog"],
+      "args": ["--yes", "@kud/mcp-datadog@latest"],
       "env": {
         "DD_API_KEY": "your-api-key",
-        "DD_APP_KEY": "your-app-key"
+        "DD_APP_KEY": "your-app-key",
+        "DD_SITE": "datadoghq.com"
       }
     }
   }
