@@ -32,6 +32,7 @@
 - **🎨 Dashboard Access** - View and manage Datadog dashboards
 - **🔔 Events** - Create and list events
 - **⏱️ Downtime Scheduling** - Manage scheduled downtimes
+- **🔍 APM & Tracing** - List and aggregate trace spans, access service catalog
 - **🔐 Secure Authentication** - API and Application key support
 - **🌍 Multi-Region** - Support for US, EU, and other Datadog sites
 - **⚡ Modern Stack** - TypeScript 5.3+, ES2023, Official Datadog SDK
@@ -340,6 +341,116 @@ List scheduled downtimes.
 
 **Parameters:**
 - `currentOnly` (optional): Only return currently active downtimes
+
+### APM & Tracing Operations
+
+#### `datadog_list_spans`
+List APM trace spans that match a search query (simple version).
+
+**Parameters:**
+- `filterQuery` (optional): Search query following spans syntax (e.g., `"service:my-service operation_name:http.request"`)
+- `filterFrom` (optional): Minimum timestamp for spans (ISO8601, date math, or milliseconds)
+- `filterTo` (optional): Maximum timestamp for spans (ISO8601, date math, or milliseconds)
+- `sort` (optional): Order of spans (`timestamp` or `-timestamp`)
+- `pageCursor` (optional): Cursor for pagination from previous query
+- `pageLimit` (optional): Maximum number of spans to return (default: 10)
+
+**Example:**
+```json
+{
+  "filterQuery": "service:api-gateway status:error",
+  "filterFrom": "now-1h",
+  "filterTo": "now",
+  "pageLimit": 50
+}
+```
+
+#### `datadog_list_spans_advanced`
+List APM spans with complex filtering using request body.
+
+**Parameters:**
+- `body` (required): SpansListRequest object with filter, sort, page, and options
+
+**Example:**
+```json
+{
+  "body": {
+    "filter": {
+      "query": "service:api-gateway @http.status_code:>=500",
+      "from": "now-1h",
+      "to": "now"
+    },
+    "sort": "-timestamp",
+    "page": {
+      "limit": 100
+    }
+  }
+}
+```
+
+#### `datadog_aggregate_spans`
+Aggregate APM spans into buckets and compute metrics/timeseries.
+
+**Parameters:**
+- `body` (required): SpansAggregateRequest object with compute, filter, group_by, and options
+
+**Example:**
+```json
+{
+  "body": {
+    "compute": [
+      {
+        "aggregation": "count",
+        "type": "total"
+      }
+    ],
+    "filter": {
+      "query": "service:api-gateway",
+      "from": "now-1h",
+      "to": "now"
+    },
+    "group_by": [
+      {
+        "facet": "@http.status_code",
+        "limit": 10
+      }
+    ]
+  }
+}
+```
+
+### Service Catalog Operations
+
+#### `datadog_list_services`
+List all service definitions from the Datadog Service Catalog.
+
+**Parameters:**
+- `pageSize` (optional): Number of services per page (max: 100)
+- `pageNumber` (optional): Specific page number to return
+- `schemaVersion` (optional): Schema version desired in response (v2, v2.1, v2.2)
+
+**Example:**
+```json
+{
+  "pageSize": 50,
+  "pageNumber": 1
+}
+```
+
+#### `datadog_get_service`
+Get a single service definition from the Datadog Service Catalog.
+
+**Parameters:**
+- `serviceName` (required): Name of the service to retrieve
+- `schemaVersion` (optional): Schema version desired in response (v2, v2.1, v2.2)
+
+**Example:**
+```json
+{
+  "serviceName": "api-gateway",
+  "schemaVersion": "v2.2"
+}
+```
 
 ---
 

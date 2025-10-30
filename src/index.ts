@@ -20,6 +20,11 @@ import { listLogs } from './tools/list-logs.js';
 import { listEvents } from './tools/list-events.js';
 import { createEvent } from './tools/create-event.js';
 import { listDowntimes } from './tools/list-downtimes.js';
+import { listSpansGet } from './tools/spans/list-spans-get.js';
+import { listSpans } from './tools/spans/list-spans.js';
+import { aggregateSpans } from './tools/spans/aggregate-spans.js';
+import { listServiceDefinitions } from './tools/services/list-service-definitions.js';
+import { getServiceDefinition } from './tools/services/get-service-definition.js';
 
 // Tool definitions with proper MCP schema
 const tools: Tool[] = [
@@ -326,6 +331,111 @@ const tools: Tool[] = [
       },
       required: []
     }
+  },
+  {
+    name: 'datadog_list_spans',
+    description: 'List APM spans that match a search query (simple version with query parameters)',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        filterQuery: {
+          type: 'string',
+          description: 'Search query following spans syntax (e.g., "service:my-service operation_name:http.request")'
+        },
+        filterFrom: {
+          type: 'string',
+          description: 'Minimum timestamp for requested spans (ISO8601, date math, or milliseconds)'
+        },
+        filterTo: {
+          type: 'string',
+          description: 'Maximum timestamp for requested spans (ISO8601, date math, or milliseconds)'
+        },
+        sort: {
+          type: 'string',
+          description: 'Order of spans in results (timestamp or -timestamp)',
+          enum: ['timestamp', '-timestamp']
+        },
+        pageCursor: {
+          type: 'string',
+          description: 'Cursor for pagination from previous query'
+        },
+        pageLimit: {
+          type: 'number',
+          description: 'Maximum number of spans to return (default: 10)'
+        }
+      },
+      required: []
+    }
+  },
+  {
+    name: 'datadog_list_spans_advanced',
+    description: 'List APM spans with complex filtering using request body',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        body: {
+          type: 'object',
+          description: 'SpansListRequest object with filter, sort, page, and options',
+          additionalProperties: true
+        }
+      },
+      required: ['body']
+    }
+  },
+  {
+    name: 'datadog_aggregate_spans',
+    description: 'Aggregate APM spans into buckets and compute metrics/timeseries',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        body: {
+          type: 'object',
+          description: 'SpansAggregateRequest object with compute, filter, group_by, and options',
+          additionalProperties: true
+        }
+      },
+      required: ['body']
+    }
+  },
+  {
+    name: 'datadog_list_services',
+    description: 'List all service definitions from the Datadog Service Catalog',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        pageSize: {
+          type: 'number',
+          description: 'Number of services per page (max: 100)'
+        },
+        pageNumber: {
+          type: 'number',
+          description: 'Specific page number to return'
+        },
+        schemaVersion: {
+          type: 'string',
+          description: 'Schema version desired in response (v2, v2.1, v2.2)'
+        }
+      },
+      required: []
+    }
+  },
+  {
+    name: 'datadog_get_service',
+    description: 'Get a single service definition from the Datadog Service Catalog',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        serviceName: {
+          type: 'string',
+          description: 'Name of the service to retrieve'
+        },
+        schemaVersion: {
+          type: 'string',
+          description: 'Schema version desired in response (v2, v2.1, v2.2)'
+        }
+      },
+      required: ['serviceName']
+    }
   }
 ];
 
@@ -343,7 +453,12 @@ const toolHandlers: Record<string, ToolHandler> = {
   'datadog_list_logs': listLogs,
   'datadog_list_events': listEvents,
   'datadog_create_event': createEvent,
-  'datadog_list_downtimes': listDowntimes
+  'datadog_list_downtimes': listDowntimes,
+  'datadog_list_spans': listSpansGet,
+  'datadog_list_spans_advanced': listSpans,
+  'datadog_aggregate_spans': aggregateSpans,
+  'datadog_list_services': listServiceDefinitions,
+  'datadog_get_service': getServiceDefinition
 };
 
 // Create MCP server instance
