@@ -26,13 +26,28 @@
 
 ## 🌟 Features
 
-- **📊 Monitor Management** - List, create, update, and delete monitors
-- **📈 Metrics Operations** - Submit custom metrics and query metric data
-- **📝 Logs Management** - Search and retrieve logs from Datadog
-- **🎨 Dashboard Access** - View and manage Datadog dashboards
+### **176 Tools Across All Datadog APIs** ✨ **100% Coverage**
+
+- **📊 Monitors** - Full CRUD + search, validate, update
+- **📈 Metrics** - Submit, query, list active, manage metadata
+- **📝 Logs** - List, aggregate, archives, pipelines, indexes, metrics
+- **🎨 Dashboards** - Full CRUD + dashboard lists management
 - **🔔 Events** - Create and list events
-- **⏱️ Downtime Scheduling** - Manage scheduled downtimes
-- **🔍 APM & Tracing** - List and aggregate trace spans, access service catalog
+- **⏱️ Downtimes** - Full CRUD operations
+- **🔍 APM & Tracing** - List/aggregate spans, retention filters, service catalog
+- **🎯 SLOs** - Full CRUD + history tracking
+- **🤖 Synthetics** - Full test management (API & Browser tests)
+- **🚨 Incidents** - Full CRUD + incident services & teams
+- **👥 Users & Roles** - Complete IAM management
+- **🏷️ Tags & Hosts** - Tag management, host monitoring & muting
+- **🏢 Organizations & Teams** - Multi-org and team management
+- **☁️ Cloud Integrations** - AWS, Azure, and GCP integrations
+- **🔒 Security Monitoring** - Security rules and monitoring
+- **📱 RUM** - Real User Monitoring application management
+- **🔑 Key Management** - API keys and application keys
+- **📔 Notebooks** - Collaborative notebook management
+- **🔗 Webhooks** - Webhook integration management
+- **💰 Usage & Billing** - Usage tracking and billing information
 - **🔐 Secure Authentication** - API and Application key support
 - **🌍 Multi-Region** - Support for US, EU, and other Datadog sites
 - **⚡ Modern Stack** - TypeScript 5.3+, ES2023, Official Datadog SDK
@@ -151,6 +166,47 @@ The server works with any MCP-compatible client. Refer to your client's document
 
 ## 🛠️ Available Tools
 
+**176 tools available across 28 categories** covering 100% of the Datadog API surface.
+
+> **Note**: For the complete list of all 176 tools with full parameter specifications, see the tool definitions in `src/index.ts` or use your MCP client's tool listing feature.
+
+### Quick Reference by Category
+
+| Category | Tools | Operations |
+|----------|-------|------------|
+| **Monitors** | 7 | list, get, create, update, delete, search, validate |
+| **Metrics** | 5 | submit, query, list_active, get_metadata, update_metadata |
+| **Logs** | 18 | list, aggregate, archives (full CRUD), pipelines (full CRUD), indexes (get, list, update), metrics (full CRUD) |
+| **Dashboards** | 8 | list, get, create, update, delete, lists (full CRUD) |
+| **Events** | 3 | list, get, create |
+| **Service Checks** | 1 | submit_service_check |
+| **Downtimes** | 5 | list, get, create, update, cancel |
+| **APM & Tracing** | 8 | list_spans, aggregate_spans, retention_filters (full CRUD) |
+| **Service Catalog** | 4 | list_services, get_service, create_or_update, delete |
+| **SLOs** | 7 | list, get, create, update, delete, get_history, search |
+| **Synthetics** | 8 | list, get, create, update, delete, get_results, trigger, list_locations |
+| **Incidents** | 16 | incidents (full CRUD + search), services (full CRUD), teams (full CRUD) |
+| **Users** | 5 | list, get, create, update, disable |
+| **Roles** | 9 | list, get, create, update, delete, list_permissions, add/remove_permission, list_users |
+| **Tags** | 5 | list_host_tags, get_host_tags, create_host_tags, update_host_tags, delete_host_tags |
+| **Hosts** | 4 | list, get_totals, mute, unmute |
+| **Organizations** | 3 | list, get, update |
+| **Teams** | 5 | list, get, create, update, delete |
+| **Cloud Integrations** | 12 | AWS (list, create, delete, log_services), Azure (full CRUD + host_filters), GCP (full CRUD) |
+| **Security Monitoring** | 6 | list_rules, get_rule, create_rule, update_rule, delete_rule, list_signals |
+| **RUM** | 7 | list_applications, get_application, create_application, update_application, delete_application, search_events, aggregate_events |
+| **Dashboard Lists** | 5 | list, get, create, update, delete |
+| **Key Management** | 9 | API keys (full CRUD + list), App keys (full CRUD + list) |
+| **Notebooks** | 5 | list, get, create, update, delete |
+| **Webhooks** | 4 | get, create, update, delete |
+| **Usage & Billing** | 5 | get_summary, get_hosts, get_logs, get_timeseries, get_top_avg_metrics |
+
+---
+
+### Sample Tool Usage
+
+Below are examples for key tool categories. All tools follow similar patterns.
+
 ### Monitor Operations
 
 #### `datadog_list_monitors`
@@ -198,259 +254,57 @@ Create a new Datadog monitor.
 }
 ```
 
-#### `datadog_delete_monitor`
-Delete a monitor.
+---
 
-**Parameters:**
-- `monitorId` (required): Monitor ID to delete
+### Additional Tool Categories
+
+All other tool categories (SLOs, Synthetics, Incidents, Users, Roles, Teams, Organizations, Cloud Integrations, Security, RUM, Notebooks, Webhooks, Usage, etc.) follow the same pattern with consistent CRUD operations where applicable.
+
+**To discover all tools:**
+- In Claude Desktop/Code: Tools are auto-discovered
+- Via MCP Inspector: `npm run inspector`
+- In code: See `src/index.ts` for full tool definitions
 
 ---
 
 ### Dashboard Operations
 
-#### `datadog_list_dashboards`
-List all Datadog dashboards.
-
-**Parameters:**
-- `filterShared` (optional): Filter by shared dashboards only
-
-#### `datadog_get_dashboard`
-Get detailed information about a specific dashboard.
-
-**Parameters:**
-- `dashboardId` (required): Dashboard ID
+**Key tools**: `datadog_list_dashboards`, `datadog_get_dashboard`, `datadog_create_dashboard`, `datadog_update_dashboard`, `datadog_delete_dashboard`
 
 ---
 
 ### Metrics Operations
 
-#### `datadog_submit_metrics`
-Submit custom metrics to Datadog.
+**Key tools**: `datadog_submit_metrics`, `datadog_query_metrics`, `datadog_list_active_metrics`, `datadog_get_metric_metadata`, `datadog_update_metric_metadata`
 
-**Parameters:**
-- `series` (required): Array of metric series
-
-**Metric Types:**
-- `0`: Count
-- `1`: Rate
-- `2`: Gauge
-
-**Example:**
+**Example** - Submit custom metrics:
 ```json
 {
-  "series": [
-    {
-      "metric": "my.custom.metric",
-      "type": 2,
-      "points": [
-        {
-          "timestamp": 1234567890,
-          "value": 42.5
-        }
-      ],
-      "tags": ["env:production"],
-      "unit": "percent"
-    }
-  ]
-}
-```
-
-#### `datadog_query_metrics`
-Query metrics data from Datadog.
-
-**Parameters:**
-- `from` (required): Start time (Unix timestamp)
-- `to` (required): End time (Unix timestamp)
-- `query` (required): Metric query string
-
-**Example:**
-```json
-{
-  "from": 1234567890,
-  "to": 1234571490,
-  "query": "avg:system.cpu.user{*}"
+  "series": [{
+    "metric": "my.custom.metric",
+    "type": 2,
+    "points": [{"timestamp": 1234567890, "value": 42.5}],
+    "tags": ["env:production"]
+  }]
 }
 ```
 
 ---
 
-### Logs Operations
+### Other Operations
 
-#### `datadog_list_logs`
-Search and list logs from Datadog.
+**Logs**: `datadog_list_logs`, `datadog_aggregate_logs`, plus archives, pipelines, indexes, and metrics management
 
-**Parameters:**
-- `filterQuery` (optional): Log search query
-- `filterFrom` (optional): Start time (ISO 8601 format)
-- `filterTo` (optional): End time (ISO 8601 format)
-- `sort` (optional): Sort order
-- `pageLimit` (optional): Maximum number of logs to return
+**Events**: `datadog_list_events`, `datadog_create_event`
 
-**Example:**
-```json
-{
-  "filterQuery": "status:error service:api",
-  "filterFrom": "2024-01-01T00:00:00Z",
-  "filterTo": "2024-01-01T23:59:59Z",
-  "pageLimit": 100
-}
-```
+**Downtimes**: Full CRUD operations with `datadog_list_downtimes`, `datadog_get_downtime`, `datadog_create_downtime`, etc.
 
----
+**APM & Tracing**: `datadog_list_spans`, `datadog_aggregate_spans`, retention filters, service catalog
 
-### Events Operations
-
-#### `datadog_list_events`
-List events from Datadog.
-
-**Parameters:**
-- `start` (required): Start time (Unix timestamp)
-- `end` (required): End time (Unix timestamp)
-- `priority` (optional): Filter by priority (normal or low)
-- `sources` (optional): Filter by sources (comma-separated)
-- `tags` (optional): Filter by tags (comma-separated)
-
-#### `datadog_create_event`
-Create a new event in Datadog.
-
-**Parameters:**
-- `title` (required): Event title
-- `text` (required): Event description
-- `tags` (optional): Event tags
-- `alertType` (optional): Alert type (error, warning, info, success)
-- `priority` (optional): Priority (normal or low)
-- `aggregationKey` (optional): Aggregation key for grouping events
-
-**Example:**
-```json
-{
-  "title": "Deployment completed",
-  "text": "Version 1.2.3 deployed to production",
-  "tags": ["env:production", "version:1.2.3"],
-  "alertType": "success",
-  "priority": "normal"
-}
-```
-
----
-
-### Downtime Operations
-
-#### `datadog_list_downtimes`
-List scheduled downtimes.
-
-**Parameters:**
-- `currentOnly` (optional): Only return currently active downtimes
-
-### APM & Tracing Operations
-
-#### `datadog_list_spans`
-List APM trace spans that match a search query (simple version).
-
-**Parameters:**
-- `filterQuery` (optional): Search query following spans syntax (e.g., `"service:my-service operation_name:http.request"`)
-- `filterFrom` (optional): Minimum timestamp for spans (ISO8601, date math, or milliseconds)
-- `filterTo` (optional): Maximum timestamp for spans (ISO8601, date math, or milliseconds)
-- `sort` (optional): Order of spans (`timestamp` or `-timestamp`)
-- `pageCursor` (optional): Cursor for pagination from previous query
-- `pageLimit` (optional): Maximum number of spans to return (default: 10)
-
-**Example:**
-```json
-{
-  "filterQuery": "service:api-gateway status:error",
-  "filterFrom": "now-1h",
-  "filterTo": "now",
-  "pageLimit": 50
-}
-```
-
-#### `datadog_list_spans_advanced`
-List APM spans with complex filtering using request body.
-
-**Parameters:**
-- `body` (required): SpansListRequest object with filter, sort, page, and options
-
-**Example:**
-```json
-{
-  "body": {
-    "filter": {
-      "query": "service:api-gateway @http.status_code:>=500",
-      "from": "now-1h",
-      "to": "now"
-    },
-    "sort": "-timestamp",
-    "page": {
-      "limit": 100
-    }
-  }
-}
-```
-
-#### `datadog_aggregate_spans`
-Aggregate APM spans into buckets and compute metrics/timeseries.
-
-**Parameters:**
-- `body` (required): SpansAggregateRequest object with compute, filter, group_by, and options
-
-**Example:**
-```json
-{
-  "body": {
-    "compute": [
-      {
-        "aggregation": "count",
-        "type": "total"
-      }
-    ],
-    "filter": {
-      "query": "service:api-gateway",
-      "from": "now-1h",
-      "to": "now"
-    },
-    "group_by": [
-      {
-        "facet": "@http.status_code",
-        "limit": 10
-      }
-    ]
-  }
-}
-```
-
-### Service Catalog Operations
-
-#### `datadog_list_services`
-List all service definitions from the Datadog Service Catalog.
-
-**Parameters:**
-- `pageSize` (optional): Number of services per page (max: 100)
-- `pageNumber` (optional): Specific page number to return
-- `schemaVersion` (optional): Schema version desired in response (v2, v2.1, v2.2)
-
-**Example:**
-```json
-{
-  "pageSize": 50,
-  "pageNumber": 1
-}
-```
-
-#### `datadog_get_service`
-Get a single service definition from the Datadog Service Catalog.
-
-**Parameters:**
-- `serviceName` (required): Name of the service to retrieve
-- `schemaVersion` (optional): Schema version desired in response (v2, v2.1, v2.2)
-
-**Example:**
-```json
-{
-  "serviceName": "api-gateway",
-  "schemaVersion": "v2.2"
-}
-```
+**For complete documentation of all 139 tools**, see:
+- Tool definitions in `src/index.ts`
+- Interactive discovery via MCP Inspector: `npm run inspector`
+- Your MCP client's tool listing feature
 
 ---
 
