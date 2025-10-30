@@ -92,7 +92,7 @@ export class DatadogClient {
 
       // Set server variables if site is provided (for EU, etc.)
       if (credentials.site) {
-        client.setServerVariables(this.configuration, {
+        this.configuration.setServerVariables({
           site: credentials.site,
         });
       }
@@ -107,7 +107,7 @@ export class DatadogClient {
       });
 
       if (env.DD_SITE) {
-        client.setServerVariables(this.configuration, {
+        this.configuration.setServerVariables({
           site: env.DD_SITE,
         });
       }
