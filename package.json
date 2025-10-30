@@ -1,6 +1,6 @@
 {
   "name": "@kud/mcp-datadog",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Datadog MCP server for monitoring, metrics, logs, and dashboards",
   "type": "module",
   "main": "dist/index.js",
