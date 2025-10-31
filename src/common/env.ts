@@ -2,10 +2,11 @@ export interface DatadogEnv {
   DD_API_KEY: string;
   DD_APP_KEY: string;
   DD_SITE?: string;
+  DD_TOOL_CATEGORIES?: string;
 }
 
 export const loadDatadogEnv = (): DatadogEnv => {
-  const { DD_API_KEY, DD_APP_KEY, DD_SITE } = process.env;
+  const { DD_API_KEY, DD_APP_KEY, DD_SITE, DD_TOOL_CATEGORIES } = process.env;
 
   if (!DD_API_KEY) {
     throw new Error(
@@ -23,5 +24,6 @@ export const loadDatadogEnv = (): DatadogEnv => {
     DD_API_KEY,
     DD_APP_KEY,
     DD_SITE, // Optional: defaults to 'datadoghq.com', can be 'datadoghq.eu' for EU, etc.
+    DD_TOOL_CATEGORIES, // Optional: comma-separated list of tool categories to enable (e.g., 'monitors,dashboards,metrics')
   };
 };

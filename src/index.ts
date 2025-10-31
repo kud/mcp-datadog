@@ -6,8 +6,9 @@ import {
   ListToolsRequestSchema,
   Tool
 } from '@modelcontextprotocol/sdk/types.js';
-import { logger, McpError } from './common/index.js';
+import { logger, McpError, loadDatadogEnv } from './common/index.js';
 import { DatadogClient } from './lib/datadog-client.js';
+import { filterToolsByCategories, getToolCategorySummary } from './common/tool-categories.js';
 
 // Import existing tools from root tools directory
 import { listMonitors } from './tools/list-monitors.js';
@@ -3303,7 +3304,19 @@ try {
 
 // List tools handler
 server.setRequestHandler(ListToolsRequestSchema, async () => {
-  return { tools };
+  // Get DD_TOOL_CATEGORIES from environment (defaults to 'essential' if not set)
+  const env = loadDatadogEnv();
+  const categoryFilter = env.DD_TOOL_CATEGORIES || 'essential';
+  const filteredTools = filterToolsByCategories(tools, env.DD_TOOL_CATEGORIES);
+
+  // Log filtering info
+  logger.info(`Tool filtering: ${categoryFilter}`, {
+    totalTools: tools.length,
+    filteredTools: filteredTools.length,
+    categories: getToolCategorySummary(filteredTools),
+  });
+
+  return { tools: filteredTools };
 });
 
 // Call tool handler

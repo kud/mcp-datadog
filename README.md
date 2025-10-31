@@ -98,6 +98,59 @@ export DD_APP_KEY="your-datadog-application-key"
 
 # Optional: for EU or other regions
 export DD_SITE="datadoghq.eu"  # Default: datadoghq.com
+
+# Optional: Filter tools by category (see Tool Filtering section below)
+# Defaults to 'essential' if not specified
+export DD_TOOL_CATEGORIES="essential"  # or "all", "monitoring", "observability", etc.
+```
+
+### 🎯 Tool Filtering
+
+**By default, the server uses the `essential` preset** which focuses on debugging and understanding traces - the core tools developers need to investigate issues (~30-40 tools).
+
+You can change this behavior using the `DD_TOOL_CATEGORIES` environment variable.
+
+**Available Presets:**
+
+- `essential` (default) - **Trace debugging focused**: APM/spans, service catalog, logs, metrics queries, events, monitors (read-only) - **~35 tools**
+- `observability` - **Full observability stack**: APM, logs, metrics, RUM, service catalog, events - **~50 tools**
+- `monitoring` - **Alerting management**: monitors, downtimes, SLOs, synthetics, incidents - **~45 tools**
+- `management` - **Workspace management**: dashboards, users, roles, teams, organizations, keys, notebooks - **~40 tools**
+- `all` - **All tools**: Disable filtering and expose all 176 tools - **~176 tools**
+
+**Custom Categories:**
+
+You can also specify a comma-separated list of specific categories:
+
+```bash
+# Only enable monitors and dashboards
+export DD_TOOL_CATEGORIES="monitors,dashboards"
+
+# Enable metrics, logs, and APM
+export DD_TOOL_CATEGORIES="metrics,logs,apm"
+```
+
+**Available Categories:**
+
+`monitors`, `dashboards`, `metrics`, `logs`, `events`, `downtimes`, `slos`, `synthetics`, `incidents`, `users`, `roles`, `tags`, `hosts`, `organizations`, `teams`, `integrations`, `security`, `rum`, `apm`, `service-catalog`, `dashboard-lists`, `api-keys`, `notebooks`, `webhooks`, `usage`
+
+**Example Usage:**
+
+```bash
+# Use default (essential preset for trace debugging)
+npx @kud/mcp-datadog@latest
+
+# Use all tools
+export DD_TOOL_CATEGORIES="all"
+npx @kud/mcp-datadog@latest
+
+# Use specific preset
+export DD_TOOL_CATEGORIES="observability"
+npx @kud/mcp-datadog@latest
+
+# Use specific categories
+export DD_TOOL_CATEGORIES="monitors,metrics,dashboards"
+npx @kud/mcp-datadog@latest
 ```
 
 ---
@@ -124,6 +177,8 @@ Add to your `claude_desktop_config.json`:
 }
 ```
 
+To use all tools or a different preset, add `"DD_TOOL_CATEGORIES": "all"` to the env section.
+
 **Config file locations:**
 - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
 - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
@@ -133,10 +188,19 @@ Add to your `claude_desktop_config.json`:
 **Option 1: Using the CLI command (recommended):**
 
 ```bash
+# Default (essential preset)
 claude mcp add --transport stdio --scope user datadog \
   --env DD_API_KEY=your-api-key \
   --env DD_APP_KEY=your-app-key \
   --env DD_SITE=datadoghq.com \
+  -- npx --yes @kud/mcp-datadog@latest
+
+# Or with all tools enabled
+claude mcp add --transport stdio --scope user datadog \
+  --env DD_API_KEY=your-api-key \
+  --env DD_APP_KEY=your-app-key \
+  --env DD_SITE=datadoghq.com \
+  --env DD_TOOL_CATEGORIES=all \
   -- npx --yes @kud/mcp-datadog@latest
 ```
 
@@ -157,6 +221,8 @@ claude mcp add --transport stdio --scope user datadog \
   }
 }
 ```
+
+Optionally add `"DD_TOOL_CATEGORIES": "all"` to the env section for all tools.
 
 ### Other MCP Clients
 
